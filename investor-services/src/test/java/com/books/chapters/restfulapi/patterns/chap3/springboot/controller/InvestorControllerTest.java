@@ -26,12 +26,6 @@ public class InvestorControllerTest {
 	@MockBean
 	private InvestorService studentService;
 	
-	
-//	Stock mockStock = new Stock("symbol",100,20.0);
-//	Investor mockInvestor = new Investor("INV_1", "name", "description", Arrays.asList(mockStock));
-//	String exInvestorsJson = "{\"id\":\"INV_1\",\"name\":\"name\",\"description\":\"description\",\"stocks\":[\"symbol\",\"100\",\"20.0\"]}";
-	
-
 	@Test
 	public void fetchAllInvestors() throws Exception{
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
@@ -42,5 +36,4 @@ public class InvestorControllerTest {
 		System.out.println("here "+response);
 		
 	}
-
 }

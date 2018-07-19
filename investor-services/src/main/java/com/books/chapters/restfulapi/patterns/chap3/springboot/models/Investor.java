@@ -43,7 +43,7 @@ public class Investor {
 		return stocks;
 	}
 
-	public void setCourses(List<Stock> stocks) {
+	public void setStocks(List<Stock> stocks) {
 		this.stocks = stocks;
 	}
 

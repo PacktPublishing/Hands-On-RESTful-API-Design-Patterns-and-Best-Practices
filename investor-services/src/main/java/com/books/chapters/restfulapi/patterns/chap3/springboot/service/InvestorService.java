@@ -40,15 +40,82 @@ public class InvestorService {
 		return investorsList;
 	}
 
-	public Investor fetchInvestorById(String investortId) {
-		return investorsList.stream().filter(investors -> investortId.equalsIgnoreCase(investors.getId())).findAny()
+	public Investor fetchInvestorById(String investorId) {
+		return investorsList.stream().filter(investors -> investorId.equalsIgnoreCase(investors.getId())).findAny()
 				.orElse(null);
 
 	}
 
-	public List<Stock> fetcStocksByInvestorId(String investortId) {
-		Investor investor = fetchInvestorById(investortId);
+	public List<Stock> fetchStocksByInvestorId(String investorId) {
+		Investor investor = fetchInvestorById(investorId);
 		return investor.getStocks();
+	}
+
+	public Stock fetchSingleStockByInvestorIdAndStockSymbol(String investorId, String symbol) {
+		Investor investor = fetchInvestorById(investorId);
+		return investor.getStocks().stream().filter(stock -> symbol.equalsIgnoreCase(stock.getSymbol())).findAny()
+				.orElse(null);
+	}
+
+	public Stock addNewStockToTheInvestorPortfolio(String investorId, Stock newStock) {
+		if (fetchInvestorById(investorId) != null && isUnique(investorId, newStock)
+				&& isNewStockInsertSucess(investorId, newStock)) {
+			return fetchSingleStockByInvestorIdAndStockSymbol(investorId, newStock.getSymbol());
+		}
+		return null;
+	}
+
+	private boolean isNewStockInsertSucess(String investorId, Stock newStock) {
+		return fetchInvestorById(investorId).getStocks().add(newStock);
+	}
+
+	private boolean isUnique(String investorId, Stock newStock) {
+		return fetchSingleStockByInvestorIdAndStockSymbol(investorId, newStock.getSymbol()) == null;
+	}
+
+	public boolean deleteStockFromTheInvestorPortfolio(String investorId, String stockTobeDeletedSymbol) {
+		boolean deletedStatus = false;
+		Stock stockTobeDeleted = fetchSingleStockByInvestorIdAndStockSymbol(investorId, stockTobeDeletedSymbol);
+		if (stockTobeDeleted != null) {
+			Investor investor = fetchInvestorById(investorId);
+			deletedStatus = investor.getStocks().remove(stockTobeDeleted);
+		}
+		return deletedStatus;
+	}
+
+	public Stock updateAStockByInvestorIdAndStock(String investorId, Stock stockTobeUpdated) {
+		Investor investor = fetchInvestorById(investorId);
+		if (investor == null) {
+			return null;
+		}
+		Stock currentStock = fetchSingleStockByInvestorIdAndStockSymbol(investorId, stockTobeUpdated.getSymbol());
+		if (currentStock == null) {
+			return null;
+		}
+		currentStock.setNumberOfSharesHeld(stockTobeUpdated.getNumberOfSharesHeld());
+		currentStock.setTickerPrice(stockTobeUpdated.getTickerPrice());
+		return currentStock;
+	}
+	
+	// slight variance of updateAStockByInvestorIdAndStock for PATCH method
+	// please note that spring boot provides annotations based validations for JSON, however this
+	// method is not using those annotations for keeping the scope simple for patching examples
+	public Stock updateAStockByInvestorIdAndStock(String investorId, String symbol, Stock stockTobeUpdated) {
+		Investor investor = fetchInvestorById(investorId);
+		if (investor == null) {
+			return null;
+		}
+		Stock currentStock = fetchSingleStockByInvestorIdAndStockSymbol(investorId, symbol);
+		if (currentStock == null) {
+			return null;
+		}
+		if(stockTobeUpdated.getNumberOfSharesHeld() > 0 ){
+			currentStock.setNumberOfSharesHeld(stockTobeUpdated.getNumberOfSharesHeld());
+		}
+		if(stockTobeUpdated.getTickerPrice() > 0 ){
+			currentStock.setTickerPrice(stockTobeUpdated.getTickerPrice());
+		}
+		return currentStock;
 	}
 
 }
