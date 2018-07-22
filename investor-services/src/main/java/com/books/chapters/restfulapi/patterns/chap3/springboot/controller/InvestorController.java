@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,12 +37,18 @@ public class InvestorController {
 		return investorService.fetchInvestorById(investorId);
 	}
 
-	@GetMapping("/investors/{investorId}/stocks")
+	@GetMapping(path = "/investors/{investorId}/stocks")
 	public List<Stock> fetchStocksByInvestorId(@PathVariable String investorId) {
 		return investorService.fetchStocksByInvestorId(investorId);
 	}
 
-	@GetMapping("/investors/{investorId}/stocks/{symbol}")
+	/**
+	 * method example which produces both xml and json output, other methods
+	 * produces only json response and for other content type it errors out 406
+	 * content not allowed
+	 */
+	@GetMapping(path = "/investors/{investorId}/stocks/{symbol}", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	public Stock fetchAStockByInvestorIdAndStockId(@PathVariable String investorId, @PathVariable String symbol) {
 		return investorService.fetchSingleStockByInvestorIdAndStockSymbol(investorId, symbol);
 	}
@@ -70,7 +77,7 @@ public class InvestorController {
 				.buildAndExpand(updatedStock.getSymbol()).toUri();
 		return ResponseEntity.created(location).build();
 	}
-	
+
 	@PatchMapping("/investors/{investorId}/stocks/{symbol}")
 	public ResponseEntity<Void> updateAStockOfTheInvestorPortfolio(@PathVariable String investorId,
 			@PathVariable String symbol, @RequestBody Stock stockTobeUpdated) {
