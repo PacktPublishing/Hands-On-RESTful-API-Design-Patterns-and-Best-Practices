@@ -39,7 +39,7 @@ public class InvestorServiceTest extends TestCase {
 	public void testFetchStocksByInvestorId() {
 		Investor expectedInvestor = getInvestorServiceForTest().fetchInvestorById("invr_1");
 		String expectedStockSymbol = "EXB";
-		assertEquals(expectedInvestor.getStocks().size(), 2);
+		assertEquals(expectedInvestor.getStocks().size(), 4);
 		Stock expectedStock = expectedInvestor.getStocks().stream()
 				.filter(stock -> expectedStockSymbol.equalsIgnoreCase(stock.getSymbol())).findAny().orElse(null);
 		assertNotNull(expectedStock);

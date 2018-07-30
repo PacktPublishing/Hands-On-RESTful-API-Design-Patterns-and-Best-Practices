@@ -31,12 +31,19 @@ public class InvestorService {
 		Stock stocksSampleThree = new Stock("EXC", 300, 200);
 		Stock stocksSampleFour = new Stock("EXD", 150, 40);
 
+		Stock stockSampleFive = new Stock("EX5", 200, 20);
+		Stock stockSampleSix = new Stock("EX6", 200, 20);
+
 		ArrayList<Stock> stocksLotOne = new ArrayList<>();
 		stocksLotOne.add(stocksSampleOne);
 		stocksLotOne.add(stocksSampleTwo);
+		stocksLotOne.add(stockSampleFive);
+		stocksLotOne.add(stockSampleSix);
 		ArrayList<Stock> stocksLotTwo = new ArrayList<>();
 		stocksLotTwo.add(stocksSampleThree);
 		stocksLotTwo.add(stocksSampleFour);
+		stocksLotTwo.add(stockSampleFive);
+		stocksLotTwo.add(stockSampleSix);
 
 		Investor investorOne = new Investor("INVR_1", "Investor ONE", "conservative investor", stocksLotOne);
 		Investor investorTwo = new Investor("INVR_2", "Investor TWO", "Moderate Risk investor", stocksLotTwo);
@@ -62,9 +69,18 @@ public class InvestorService {
 
 	}
 
-	public List<Stock> fetchStocksByInvestorId(String investorId) {
+	public List<Stock> fetchStocksByInvestorId(String investorId, int offset, int limit) {
 		Investor investor = fetchInvestorById(investorId);
-		return investor.getStocks();
+		return investor.getStocks().subList(getStartFrom(offset, investor), getToIndex(offset, limit, investor));
+	}
+
+	private int getToIndex(int offset, int limit, Investor investor) {
+		int toIndex = offset + limit;
+		return (toIndex) > investor.getStocks().size() ? investor.getStocks().size() : toIndex;
+	}
+
+	private int getStartFrom(int offset, Investor investor) {
+		return (offset) >= investor.getStocks().size() ? investor.getStocks().size() : offset;
 	}
 
 	public Stock fetchSingleStockByInvestorIdAndStockSymbol(String investorId, String symbol) {

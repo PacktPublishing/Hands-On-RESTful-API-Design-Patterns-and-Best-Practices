@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.books.chapters.restfulapi.patterns.chap3.springboot.models.Investor;
 import com.books.chapters.restfulapi.patterns.chap3.springboot.models.Stock;
+import com.books.chapters.restfulapi.patterns.chap3.springboot.models.errorsandexceptions.InvestorNotFoundException;
 import com.books.chapters.restfulapi.patterns.chap3.springboot.service.InvestorService;
 
 @RestController
@@ -34,12 +36,18 @@ public class InvestorController {
 
 	@GetMapping("/investors/{investorId}")
 	public Investor fetchInvestorById(@PathVariable String investorId) {
-		return investorService.fetchInvestorById(investorId);
+		Investor resultantInvestor = investorService.fetchInvestorById(investorId);
+		if (resultantInvestor == null) {
+			throw new InvestorNotFoundException("Investor Id-" + investorId);
+		}
+		return resultantInvestor;
 	}
 
 	@GetMapping(path = "/investors/{investorId}/stocks")
-	public List<Stock> fetchStocksByInvestorId(@PathVariable String investorId) {
-		return investorService.fetchStocksByInvestorId(investorId);
+	public List<Stock> fetchStocksByInvestorId(@PathVariable String investorId,
+			@RequestParam(value = "offset", defaultValue = "0") int offset,
+			@RequestParam(value = "limit", defaultValue = "5") int limit) {
+		return investorService.fetchStocksByInvestorId(investorId, offset, limit);
 	}
 
 	/**
