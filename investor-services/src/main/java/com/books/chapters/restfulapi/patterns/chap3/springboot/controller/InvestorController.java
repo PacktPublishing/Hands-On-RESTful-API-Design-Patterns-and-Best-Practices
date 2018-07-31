@@ -34,6 +34,12 @@ public class InvestorController {
 		return investorService.fetchAllInvestors();
 	}
 
+	@GetMapping(value="/investors/welcome", produces="text/plain;charset=UTF-8")
+	public String responseProducesConditionCharset() {
+		return "ウェルカムインベスター (\"Welcome Investor!\" in Japanese)";
+	}
+	
+	
 	@GetMapping("/investors/{investorId}")
 	public Investor fetchInvestorById(@PathVariable String investorId) {
 		Investor resultantInvestor = investorService.fetchInvestorById(investorId);
