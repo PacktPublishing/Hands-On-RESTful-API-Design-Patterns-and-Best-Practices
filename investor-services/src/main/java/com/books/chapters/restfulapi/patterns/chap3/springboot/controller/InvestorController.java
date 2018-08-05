@@ -35,7 +35,7 @@ public class InvestorController {
 	}
 
 	@GetMapping(value="/investors/welcome", produces="text/plain;charset=UTF-8")
-	public String responseProducesConditionCharset() {
+	public String welcomePageWhichProducesCharset() {
 		return "ウェルカムインベスター (\"Welcome Investor!\" in Japanese)";
 	}
 	
