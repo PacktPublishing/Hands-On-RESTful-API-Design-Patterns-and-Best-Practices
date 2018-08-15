@@ -24,7 +24,7 @@ public class InvestorControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private InvestorService studentService;
+	private InvestorService investorService;
 	
 	@Test
 	public void fetchAllInvestors() throws Exception{
