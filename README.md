@@ -1,3 +1,8 @@
+## $5 Tech Unlocked 2021!
+[Buy and download this Book for only $5 on PacktPub.com](https://www.packtpub.com/product/hands-on-restful-api-design-patterns-and-best-practices/9781788992664)
+-----
+*If you have read this book, please leave a review on [Amazon.com](https://www.amazon.com/gp/product/1788992660).     Potential readers can then use your unbiased opinion to help them make purchase decisions. Thank you. The $5 campaign         runs from __December 15th 2020__ to __January 13th 2021.__*
+
 # Hands-On RESTful API Design Patterns and Best Practices
 
 <a href="https://www.packtpub.com/application-development/hands-restful-api-design-patterns-and-best-practices?utm_source=github&utm_medium=repository&utm_campaign=9781788992664 "><img src="https://d1ldz4te4covpm.cloudfront.net/sites/default/files/imagecache/ppv4_main_book_cover/B10006_0.png" alt="Hands-On RESTful API Design Patterns and Best Practices" height="256px" align="right"></a>
